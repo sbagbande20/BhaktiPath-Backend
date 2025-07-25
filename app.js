@@ -3,12 +3,14 @@ require('dotenv').config();
 const db = require('./db/index'); // ← include your MySQL connection
 const swaggerDocs = require('./docs/swagger.js');//swagger import
 const roleRoutes = require('./routes/roles');
-
 const app = express();
 const PORT = process.env.PORT || 5000;
+const authRoutes = require('./routes/auth');
 
 app.use(express.json());
 app.use('/roles', roleRoutes); // Use the role routes
+app.use('/auth', authRoutes); // Use the auth controller routes
+
 
 
 app.get('/', (req, res) => {
