@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { registerAdmin } = require('../controllers/authcontroller'); // Import auth controller functions for admin registration
+const { loginAdmin } = require('../controllers/authcontroller'); // Import auth controller functions for admin login
 
 /**
  * @swagger
@@ -60,6 +61,7 @@ const { registerAdmin } = require('../controllers/authcontroller'); // Import au
 
 
 router.post('/register', registerAdmin);
+router.post('/login', loginAdmin); 
 
 
 

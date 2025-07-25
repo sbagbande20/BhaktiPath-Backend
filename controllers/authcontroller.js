@@ -29,7 +29,39 @@ const registerAdmin = async (req, res) => {
   }
 };
 
+const loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const query = 'SELECT * FROM admins WHERE email = ?';
+    const [rows] = await db.promise().query(query, [email]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const admin = rows[0];
+
+    const isMatch = await bcrypt.compare(password, admin.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // 🔽 Add this line here to debug your env variable
+    console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
+    const token = jwt.sign(
+      { adminId: admin.id, email: admin.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.json({ message: 'Login successful', token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 
-
-module.exports = { registerAdmin };
+module.exports = { registerAdmin, loginAdmin };
