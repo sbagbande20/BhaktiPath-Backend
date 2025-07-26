@@ -11,9 +11,6 @@ const PORT = process.env.PORT || 5000;
 const authRoutes = require('./routes/auth');
 const cors = require('cors');
 
-app.use(express.json());
-app.use('/roles', roleRoutes); // Use the role routes
-app.use('/auth', authRoutes); // Use the auth controller routes
 
 
 //backend frontend connection
@@ -23,6 +20,13 @@ app.use(cors({
   //methods: ['GET', 'POST'],
   credentials: true
 }));
+
+
+app.use(express.json());
+app.use('/roles', roleRoutes); // Use the role routes
+app.use('/auth', authRoutes); // Use the auth controller routes
+
+
 
 
 
